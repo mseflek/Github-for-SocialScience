@@ -1,0 +1,140 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=bash,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+
+%SetFonts
+
+%SetFonts
+
+
+\title{Github for Social Scientists\footnote{This guide is a living document and will be updated as necessary.}}
+\author{Mehmet Seflek}
+%\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+Github is a fantastic platform for collaborating on coding tasks. It does, however, seem significantly more ``clunky'' than other sharing and collaboration tools like Dropbox. This is on purpose: given how fickle programming can be, it is crucial to ensure that in a collaborative environment decisions to incorporate changes into your ``deployed'' program are deliberate and traceable. This not only ensures that mistakes that can potentially break your code (or worse, change your results unintentionally) are caught early, but also helps to track the changes and trace who owns them.
+
+One (highly simplified) way to think about Github versus other tools like Dropbox is to compare the ``Track Changes'' feature of Microsoft Word to saving edited versions of a document:
+\begin{itemize}
+ \item With Microsoft Word, edits and comments made by someone else must be deliberately incorporated into the main version of the document by accepting each change and reacting to each comment. Since each individual editor and change is labeled within the document on a very fine scale (ie. letter by letter), this makes identifying and incorporating changes easy. Working simultaneously on the file with multiple collaborators, however, becomes difficult (though Google Drive certainly helps with this) and Word is not typically used for coding.
+ \item Alternatively, one could save versions of a document as it is edited, where the latest version is the deployed version of the program. Each collaborator makes edits to the file and either saves his/her own versions that is eventually incorporated, or they edit the latest version. Tracking changes by each editor can be difficult since they are not clearly labeled. This can get messy quickly, as tracking changes and versions gets complicated (I have a file in my DropBox titled ``Analysis\_v3.1\_SN\_1.do''; it would take me one hour to figure out where it fits in my workflow).
+ \end{itemize}
+
+While these metaphors do not perfectly fit Github, it is useful to think of Github like Microsoft Word's track changes feature. In effect when using Github for coding in a collaborative way, it allows you to:
+
+\begin{itemize}
+\item
+Simultaneously collaborate on developing code without breaking or inadvertently changing existing code 
+\item 
+Identify changes from collaborators throughout the development of the code
+\item
+Develop new ``features'' or ``sub-analyses'' in a gated environment (``branches'') without affecting the running code
+\item
+Actively and deliberately manage code versions both across collaborators and time
+\end{itemize}
+
+\section{Why should I care about this in the social sciences?}
+Well, this is a good question answered by the correct answer to everything in economics: it depends. 
+
+If a research project requires many collaborators with potentially multiple individuals coding, then Github allows you to manage the coding process without having to develop your own internal code sharing, versioning, and merging procedures. In other words, there is no need to reinvent the wheel. For a field experiment, for example, coding happens at multiple levels (ie. sampling design, quality control, cleaning, analysis, etc) and with multiple people in the pipeline. This codebase usually needs to be managed at each level as well as centrally to ensure each piece fits together. In addition, its also important to track versions so that a future version of the team can easily retrace the analysis that has been done.
+
+Even if you are writing code by yourself, you actually \textit{are} collaborating with someone: your future or past self. Using Github to manage the coding process allows your to track the changes to your code over time easily, and revert or partially revert your changes seamlessly. It also forces you to make deliberate choices in code management. While this may sound annoying at first, having a structure that you commit to pays dividends in the future when you have to fish out that piece of code that you thought you didn't need.
+
+\section{Rough guide to working with repositories}
+[Note: I initially wrote this to share with undergraduate RAs, so I am presuming a certain knowledge of general Github workings. I also assume that you've successfully got it installed on your system. Perhaps I will extend this at some point to include those steps.]
+
+Like I mentioned above, the action of ``syncing'' code is very deliberately done using Github. I will take a step by step approach to doing this below, \textit{assuming that there is a repository that you are a collaborater on}. All of the steps below are run in a terminal session in the directory you wish to work in. Note that 
+
+\subsection{Creating a repository}
+TBD
+
+\subsection{Syncing repository to your local machine }
+
+To sync the repository to your local machine, use the following command, replacing \texttt{[your-url]} with the URL of the repository with \texttt{.git} added to the end. 
+
+\begin{lstlisting}
+git clone [your-url]
+\end{lstlisting}
+
+\noindent Now you should have all of the files associated with the repository on your local machine. This does not mean that any changes you make will automatically be synced back to Github, however. This requires a bit more work.
+
+Suppose that after you have ``cloned'' (now I will start introducing Github specific terms) the repository, you want to get to work on introducing a new feature to the existing code. Now version control becomes important. Github uses a concept called ``branches,'' which are copies of the code that can be worked on without affecting the ``master branch,'' or the version of the code that is the latest working copy. This allows you to work on developing additional features of analyses without potentially breaking running code. To do this, we create a new branch named \texttt{tinkering} (or whatever name you want to use):
+
+\begin{lstlisting}
+git checkout -b tinkering
+\end{lstlisting}
+
+The \texttt{checkout} command essentially does what you may have visualized. Like checking out a book from a library, \texttt{checkout} activates a given branch. The \texttt{-b} flag essentially says ``create this branch if it does not exist, and activate it.'' You can activate a different existing branch by dropping the \texttt{-b} flag.
+
+Now, suppose that you are now in the \texttt{tinkering} branch, and you make some changes, and now you want to incorporate your code into the master branch. First, verify that you are in the \texttt{tinkering} branch by typing the following:
+
+\begin{lstlisting}
+git status
+\end{lstlisting}
+You should get something like this:
+\begin{lstlisting}
+On branch tinkering
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working tree clean
+\end{lstlisting}
+
+Now, things get interesting. To ``stage'' your changes for potential incorporation into the working code, you have to be explicit that you want to do this. You stage the changed files for incorporation by the following command:
+\begin{lstlisting}
+git add -A
+\end{lstlisting}
+
+The \texttt{-A} flag says to stage all files that have changed within the repository. You could be very specific and list a filename instead of the \texttt{-A} flag.
+
+We're almost there. Now, we have to ``commit'' our changes to essentially create a checkpoint. This might seem weird -- didn't we just do this with the \texttt{add} command? Not exactly: \texttt{add} flagged which files will be saved in the checkpoint, but committing actually \textit{saves} that checkpoint.
+
+So now we make our first commit!
+\begin{lstlisting}
+git commit -m "First commit"
+\end{lstlisting}
+Now we've created a checkpoint! You can create as many checkpoints as you'd like, but it's up to you to make these checkpoints. To beat a dead horse, there is no ``automatic syncing''.
+
+Now you might start to get annoyed, because your changes are still not in the repository. You now have to ``push'' your changes to the repository:
+
+\begin{lstlisting} 
+git push -u origin tinkering
+\end{lstlisting}
+Here, we are sending the \texttt{tinkering} branch to the repository. Here \texttt{origin} is an alias for the remote repository that we're working with -- this is copied over when we cloned the repository.
+
+
+
+
+
+\end{document}  
